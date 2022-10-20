@@ -1,5 +1,7 @@
 Config = {}
 
+Config.Debug = false
+
 -- limit the amount of ammo players can load
 Config.MaxArrowAmmo = 30
 Config.MaxRevolverAmmo = 200

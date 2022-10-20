@@ -20,6 +20,10 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(type, amount, itemData)
     local ped = PlayerPedId()
     local weapon = Citizen.InvokeNative(0x8425C5F057012DAB, ped)
 	local weapongroup = GetWeapontypeGroup(weapon)
+	if Config.Debug == true then
+		print(weapon)
+		print(weapongroup)
+	end
 	if currentSerial ~= nil then
 		if weapongroup == -1101297303 then -- revolver weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
@@ -52,6 +56,16 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(type, amount, itemData)
 				QRCore.Functions.Notify('Max Ammo Capacity', 'error')
 			end
 		elseif weapongroup == 970310034 then -- rifle weapon group
+			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
+			if total + (amount/2) < Config.MaxRifleAmmo then
+				if QRCore.Shared.Weapons[weapon] then
+					Citizen.InvokeNative(0x106A811C6D3035F3, ped, GetHashKey(type), amount, 0xCA3454E6)
+					TriggerServerEvent('weapons:server:removeWeaponAmmoItem', itemData)
+				end
+			else
+				QRCore.Functions.Notify('Max Ammo Capacity', 'error')
+			end
+		elseif weapongroup == -1212426201 then -- sniper rifle weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
 			if total + (amount/2) < Config.MaxRifleAmmo then
 				if QRCore.Shared.Weapons[weapon] then
