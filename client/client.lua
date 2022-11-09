@@ -8,11 +8,15 @@ RegisterNetEvent('qr-weapons:client:UseWeapon', function(weaponData, shootbool)
     local weaponHash = GetHashKey(weaponData.name)
 	local weaponSerial = tostring(weaponData.info.serie)
 	local ammo = tonumber(weaponData.info.ammo) or 0
-    Citizen.InvokeNative(0xB282DC6EBD803C75, ped, weaponHash, ammo, true, 0)
+	if Citizen.InvokeNative(0x8425C5F057012DAB,ped) ~= GetHashKey("WEAPON_UNARMED") then
+		SetCurrentPedWeapon(ped, `WEAPON_UNARMED`, true)
 	local getammo = GetAmmoInPedWeapon(ped, weaponHash)
 	local getammoclip = GetAmmoInClip(ped, weaponHash)
 	TriggerServerEvent('qr-weapons:server:SaveAmmo', weaponSerial, getammo, getammoclip)
 	currentSerial = weaponSerial
+	else 
+		Citizen.InvokeNative(0xB282DC6EBD803C75, ped, weaponHash, ammo, true, 0)
+	end
 end)
 
 -- load ammo
