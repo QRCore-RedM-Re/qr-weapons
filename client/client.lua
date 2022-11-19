@@ -6,17 +6,27 @@ RegisterNetEvent('qr-weapons:client:UseWeapon', function(weaponData, shootbool)
     local ped = PlayerPedId()
     local weaponName = tostring(weaponData.name)
     local weaponHash = GetHashKey(weaponData.name)
-	local weaponSerial = tostring(weaponData.info.serie)
-	local ammo = tonumber(weaponData.info.ammo) or 0
-	if Citizen.InvokeNative(0x8425C5F057012DAB,ped) ~= GetHashKey("WEAPON_UNARMED") then
-		SetCurrentPedWeapon(ped, `WEAPON_UNARMED`, true)
-	local getammo = GetAmmoInPedWeapon(ped, weaponHash)
-	local getammoclip = GetAmmoInClip(ped, weaponHash)
-	TriggerServerEvent('qr-weapons:server:SaveAmmo', weaponSerial, getammo, getammoclip)
-	currentSerial = weaponSerial
-	else 
-		Citizen.InvokeNative(0xB282DC6EBD803C75, ped, weaponHash, ammo, true, 0)
-	end
+    local weaponSerial = tostring(weaponData.info.serie)
+	local weapon = Citizen.InvokeNative(0x8425C5F057012DAB, ped)
+    local ammo = tonumber(weaponData.info.ammo) or 0
+	local total = Citizen.InvokeNative(0x015A522136D7F951, ped, weapon, Citizen.ResultAsInteger())
+    if weaponName == 'weapon_bow' or weaponName == 'weapon_bow_improved' then
+        GiveWeaponToPed_2(PlayerPedId(), weaponHash, 0, false, true, 0, false, 0.5, 1.0, 752097756, false, 0.0, false)
+		if total == 0 then 
+        	Citizen.InvokeNative(0x106A811C6D3035F3, PlayerPedId(), GetHashKey('AMMO_ARROW'), ammo+1, 752097756)
+        	Citizen.InvokeNative(0xADF692B254977C0C, PlayerPedId(), weaponHash, true, 0, false, false)
+		end
+    else
+        if Citizen.InvokeNative(0x8425C5F057012DAB, ped) ~= GetHashKey("WEAPON_UNARMED") then
+            SetCurrentPedWeapon(ped, `WEAPON_UNARMED`, true)
+            local getammo = GetAmmoInPedWeapon(ped, weaponHash)
+            local getammoclip = GetAmmoInClip(ped, weaponHash)
+            TriggerServerEvent('qr-weapons:server:SaveAmmo', weaponSerial, getammo, getammoclip)
+            currentSerial = weaponSerial
+        else 
+            Citizen.InvokeNative(0xB282DC6EBD803C75, ped, weaponHash, ammo, true, 0)
+        end
+    end
 end)
 
 -- load ammo
