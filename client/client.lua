@@ -9,12 +9,12 @@ RegisterNetEvent('qr-weapons:client:UseWeapon', function(weaponData, shootbool)
     local weaponSerial = tostring(weaponData.info.serie)
 	local weapon = Citizen.InvokeNative(0x8425C5F057012DAB, ped)
     local ammo = tonumber(weaponData.info.ammo) or 0
-	local total = Citizen.InvokeNative(0x015A522136D7F951, ped, weapon, Citizen.ResultAsInteger())
+	local total = Citizen.InvokeNative(0x39D22031557946C1, ped, 0x38E6F55F, Citizen.ResultAsInteger()) -- ammo arrow 0x38E6F55F
     if weaponName == 'weapon_bow' or weaponName == 'weapon_bow_improved' then
         GiveWeaponToPed_2(PlayerPedId(), weaponHash, 0, false, true, 0, false, 0.5, 1.0, 752097756, false, 0.0, false)
 		if total == 0 then 
+			GiveWeaponToPed_2(PlayerPedId(), weaponHash, 0, false, true, 0, false, 0.5, 1.0, 752097756, false, 0.0, false)
         	Citizen.InvokeNative(0x106A811C6D3035F3, PlayerPedId(), GetHashKey('AMMO_ARROW'), ammo+1, 752097756)
-        	Citizen.InvokeNative(0xADF692B254977C0C, PlayerPedId(), weaponHash, true, 0, false, false)
 		end
     else
         if Citizen.InvokeNative(0x8425C5F057012DAB, ped) ~= GetHashKey("WEAPON_UNARMED") then
