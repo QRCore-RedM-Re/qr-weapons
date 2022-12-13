@@ -167,3 +167,14 @@ CreateThread(function()
 		end		
 	end
 end)
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(1)
+		SetPlayerWeaponDamageModifier(PlayerId(),Config.WeaponDmg)
+		SetPlayerMeleeWeaponDamageModifier(PlayerId(),Config.MeleeDmg)
+		if IsPlayerFreeAiming(PlayerId()) then
+			DisableControlAction(0  ,0x8FFC75D6 ,true)
+		end
+	end
+end)

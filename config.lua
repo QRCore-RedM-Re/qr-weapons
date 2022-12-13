@@ -17,3 +17,6 @@ Config.AmountPistolAmmo = 6
 Config.AmountRepeaterAmmo = 12
 Config.AmountRifleAmmo = 12
 Config.AmountShotgunAmmo = 12
+--- Damage Weapon
+Config.WeaponDmg = 0.65
+Config.MeleeDmg = 1.0
