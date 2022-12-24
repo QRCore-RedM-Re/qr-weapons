@@ -6,13 +6,18 @@ RegisterNetEvent('qr-weapons:client:UseWeapon', function(weaponData, shootbool)
     local ped = PlayerPedId()
     local weaponName = tostring(weaponData.name)
     local hash = GetHashKey(weaponData.name)
+
     if not UsedWeapons[tonumber(hash)] then
-        UsedWeapons[tonumber(hash)] = {
-            name = weaponData.name,
-            WeaponHash = hash,
-            data = weaponData,
-            serie = weaponData.info.serie,
-        }
+
+		if string.find(weaponName, 'thrown') == false then
+			UsedWeapons[tonumber(hash)] = {
+				name = weaponData.name,
+				WeaponHash = hash,
+				data = weaponData,
+				serie = weaponData.info.serie,
+			}
+		end
+
         if weaponName == 'weapon_bow' or weaponName == 'weapon_bow_improved' then
             if weaponData.info.ammo == nil then
 				local hasItem = QRCore.Functions.HasItem('ammo_arrow', 1)
@@ -38,6 +43,11 @@ RegisterNetEvent('qr-weapons:client:UseWeapon', function(weaponData, shootbool)
                 end
             end
             Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, hash, 0, false, true)
+
+		--check throwables weapons
+		elseif string.find(weaponName, 'thrown') then
+			GiveWeaponToPed_2(ped, hash, 0, false, true, 0, false, 0.5, 1.0, 752097756, false, 0.0, false)
+			TriggerServerEvent('qr-weapons:server:removeWeaponItem', weaponName, 1)
         else
             if weaponData.info.ammo == nil then
                 weaponData.info.ammo = 0
@@ -47,15 +57,21 @@ RegisterNetEvent('qr-weapons:client:UseWeapon', function(weaponData, shootbool)
         end
         if weaponName == 'weapon_bow' or weaponName == 'weapon_bow_improved' then
             SetPedAmmo(ped, hash, weaponData.info.ammo)
+
+		elseif  string.find(weaponName, 'thrown') then
+			local _ammoType = Config.AmmoTypes[weaponName]
+			Citizen.InvokeNative(0x106A811C6D3035F3, ped, _ammoType, Config.AmountThrowablesAmmo, 752097756)
         else
             SetPedAmmo(ped, hash, weaponData.info.ammo - weaponData.info.ammoclip)
             SetAmmoInClip(ped, hash, weaponData.info.ammoclip)
         end
         SetCurrentPedWeapon(ped,hash,true)
+
     else
         local ammo = GetAmmoInPedWeapon(PlayerPedId(), hash)
         local ammobool, ammoclip = GetAmmoInClip(PlayerPedId(),hash)
 		TriggerServerEvent('qr-weapons:server:SaveAmmo', weaponData.info.serie, ammo, ammoclip)
+		print('removing weapon ')
         RemoveWeaponFromPed(ped,hash)
         UsedWeapons[tonumber(hash)] = nil
     end
@@ -140,18 +156,6 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(ammotype, amount, ammo)
     else
 		QRCore.Functions.Notify('you are not holding a weapon!', 'error')
     end
-end)
-
--- throwable weapons
-RegisterNetEvent('qr-weapons:client:usethrowable', function(weapon, ammoCount, attachPoint)
-	local ped = PlayerPedId()
-    local addReason = GetHashKey('ADD_REASON_DEFAULT')
-    local weaponHash = GetHashKey(weapon)
-    -- request weapon asset
-    Citizen.InvokeNative(0x72D4CB5DB927009C, weaponHash, 0, true)
-    Wait(1000)
-    -- give weapon to ped
-    Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, weaponHash, ammoCount, true, false, attachPoint, true, 0.0, 0.0, addReason, true, 0.0, false)
 end)
 
 -- update ammo loop

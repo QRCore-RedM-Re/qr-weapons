@@ -24,100 +24,6 @@ end)
 
 -- end of use ammo
 
--- use throwables
-
--- dynamitestick
-QRCore.Functions.CreateUseableItem('dynamitestick', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_dynamite', 1, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['dynamitestick'], 'remove')
-    end
-end)
-
--- poisonbottle
-QRCore.Functions.CreateUseableItem('poisonbottle', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_poisonbottle', 1, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['poisonbottle'], 'remove')
-    end
-end)
-
--- molotov
-QRCore.Functions.CreateUseableItem('molotov', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_molotov', 1, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['molotov'], 'remove')
-    end
-end)
-
--- throwing_knives
-QRCore.Functions.CreateUseableItem('throwing_knives', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_throwing_knives', 3, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['throwing_knives'], 'remove')
-    end
-end)
-
--- tomahawk
-QRCore.Functions.CreateUseableItem('tomahawk', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_tomahawk', 3, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['tomahawk'], 'remove')
-    end
-end)
-
--- bolas
-QRCore.Functions.CreateUseableItem('bolas', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_bolas', 3, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['bolas'], 'remove')
-    end
-end)
-
--- bolas_hawkmoth
-QRCore.Functions.CreateUseableItem('bolas_hawkmoth', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_bolas_hawkmoth', 3, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['bolas_hawkmoth'], 'remove')
-    end
-end)
-
--- bolas_ironspiked
-QRCore.Functions.CreateUseableItem('bolas_ironspiked', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_bolas_ironspiked', 3, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['bolas_ironspiked'], 'remove')
-    end
-end)
-
--- bolas_intertwined
-QRCore.Functions.CreateUseableItem('bolas_intertwined', function(source, item)
-	local src = source
-    local Player = QRCore.Functions.GetPlayer(src)
-	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
-        TriggerClientEvent('qr-weapons:client:usethrowable', src, 'weapon_thrown_bolas_intertwined', 3, 0)
-		TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items['bolas_intertwined'], 'remove')
-    end
-end)
-
--- end of use throwables
-
 -- save ammo
 RegisterNetEvent('qr-weapons:server:SaveAmmo', function(serie, ammo, ammoclip)
 	local src = source
@@ -146,4 +52,12 @@ AddEventHandler('qr-weapons:server:removeWeaponAmmoItem', function(ammoitem)
 	Player.Functions.RemoveItem(ammoitem, 1)
 	TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items[ammoitem], 'remove')
 	QRCore.Functions.Notify(src, 'Weapon Reloaded', 'success')
+end)
+
+RegisterNetEvent('qr-weapons:server:removeWeaponItem', function(weaponName, amount)
+	local src = source
+	local Player = QRCore.Functions.GetPlayer(src)
+	
+	Player.Functions.RemoveItem(weaponName, amount)
+
 end)

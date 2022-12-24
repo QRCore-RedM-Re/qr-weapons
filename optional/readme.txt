@@ -1,0 +1,1 @@
+If you are using rsg-essentials, replace client --> weaponcheck.lua 
