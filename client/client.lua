@@ -93,7 +93,7 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(ammotype, amount, ammo)
 		if weapongroup == -1101297303 then -- revolver weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
 			if total + (amount/2) < Config.MaxRevolverAmmo then
-				if QRCore.Shared.Weapons[weapon] then
+				if QRCore.Shared.GetWeapon(weapon) then
 					Citizen.InvokeNative(0x106A811C6D3035F3, ped, GetHashKey(ammotype), amount, 0xCA3454E6)
 					TriggerServerEvent('qr-weapons:server:removeWeaponAmmoItem', 'ammo_revolver')
 				end
@@ -103,7 +103,7 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(ammotype, amount, ammo)
 		elseif weapongroup == 416676503 then -- pistol weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
 			if total + (amount/2) < Config.MaxPistolAmmo then
-				if QRCore.Shared.Weapons[weapon] then
+				if QRCore.Shared.GetWeapon(weapon) then
 					Citizen.InvokeNative(0x106A811C6D3035F3, ped, GetHashKey(ammotype), amount, 0xCA3454E6)
 					TriggerServerEvent('qr-weapons:server:removeWeaponAmmoItem', 'ammo_pistol')
 				end
@@ -113,7 +113,7 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(ammotype, amount, ammo)
 		elseif weapongroup == -594562071 then -- repeater weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
 			if total + (amount/2) < Config.MaxRepeaterAmmo then
-				if QRCore.Shared.Weapons[weapon] then
+				if QRCore.Shared.GetWeapon(weapon) then
 					Citizen.InvokeNative(0x106A811C6D3035F3, ped, GetHashKey(ammotype), amount, 0xCA3454E6)
 					TriggerServerEvent('qr-weapons:server:removeWeaponAmmoItem', 'ammo_repeater')
 				end
@@ -123,7 +123,7 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(ammotype, amount, ammo)
 		elseif weapongroup == 970310034 then -- rifle weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
 			if total + (amount/2) < Config.MaxRifleAmmo then
-				if QRCore.Shared.Weapons[weapon] then
+				if QRCore.Shared.GetWeapon(weapon) then
 					Citizen.InvokeNative(0x106A811C6D3035F3, ped, GetHashKey(ammotype), amount, 0xCA3454E6)
 					TriggerServerEvent('qr-weapons:server:removeWeaponAmmoItem', 'ammo_rifle')
 				end
@@ -133,7 +133,7 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(ammotype, amount, ammo)
 		elseif weapongroup == -1212426201 then -- sniper rifle weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
 			if total + (amount/2) < Config.MaxRifleAmmo then
-				if QRCore.Shared.Weapons[weapon] then
+				if QRCore.Shared.GetWeapon(weapon) then
 					Citizen.InvokeNative(0x106A811C6D3035F3, ped, GetHashKey(ammotype), amount, 0xCA3454E6)
 					TriggerServerEvent('qr-weapons:server:removeWeaponAmmoItem', 'ammo_rifle')
 				end
@@ -143,7 +143,7 @@ RegisterNetEvent('qr-weapons:client:AddAmmo', function(ammotype, amount, ammo)
 		elseif weapongroup == 860033945 then -- shotgun weapon group
 			local total = Citizen.InvokeNative(0x015A522136D7F951, PlayerPedId(), weapon, Citizen.ResultAsInteger())
 			if total + (amount/2) < Config.MaxShotgunAmmo then
-				if QRCore.Shared.Weapons[weapon] then
+				if QRCore.Shared.GetWeapon(weapon) then
 					Citizen.InvokeNative(0x106A811C6D3035F3, ped, GetHashKey(ammotype), amount, 0xCA3454E6)
 					TriggerServerEvent('qr-weapons:server:removeWeaponAmmoItem', 'ammo_shotgun')
 				end
@@ -168,11 +168,11 @@ CreateThread(function()
 		local getammoclip = GetAmmoInClip(ped, heldWeapon)
 		if currentSerial ~= nil and heldWeapon ~= -1569615261 then
 			TriggerServerEvent('qr-weapons:server:SaveAmmo', currentSerial, tonumber(getammo), tonumber(getammoclip))
-		end		
+		end
 	end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		Wait(1)
 		SetPlayerWeaponDamageModifier(PlayerId(),Config.WeaponDmg)
