@@ -50,14 +50,13 @@ AddEventHandler('qr-weapons:server:removeWeaponAmmoItem', function(ammoitem)
 	local src = source
     local Player = QRCore.Functions.GetPlayer(src)
 	Player.Functions.RemoveItem(ammoitem, 1)
-	TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.Items[ammoitem], 'remove')
+	TriggerClientEvent('inventory:client:ItemBox', src, QRCore.Shared.GetItem(ammoitem), 'remove')
 	QRCore.Functions.Notify(src, 'Weapon Reloaded', 'success')
 end)
 
 RegisterNetEvent('qr-weapons:server:removeWeaponItem', function(weaponName, amount)
 	local src = source
 	local Player = QRCore.Functions.GetPlayer(src)
-	
-	Player.Functions.RemoveItem(weaponName, amount)
 
+	Player.Functions.RemoveItem(weaponName, amount)
 end)
