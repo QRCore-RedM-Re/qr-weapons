@@ -5,7 +5,7 @@ CreateThread(function()	-- Check if player has weapon in inventory --
         Wait(5000)
 		local player = PlayerPedId()
 		local weapon = Citizen.InvokeNative(0x8425C5F057012DAB, player)
-		local WeaponData = QRCore.Shared.Weapons[weapon]
+		local WeaponData = QRCore.Shared.GetWeapon(weapon)
 		if WeaponData ~= nil and WeaponData["name"] ~= "weapon_unarmed" then
 			local weaponGroup = Citizen.InvokeNative(0xEDCA14CA5199FF25, weapon)
 
